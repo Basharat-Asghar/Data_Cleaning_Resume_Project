@@ -1,0 +1,38 @@
+Hits custom:
+=if Text.EndsWith([Hits],"K") then Number.FromText(Text.Start([Hits],Text.Length([Hits])-1)) * 1000
+ else
+    [Hits]
+
+Contract Start:
+=if Text.Length([Contract.1]) = 4 then [Contract.1]
+else
+    Text.Middle([Contract.1],Text.PositionOf([Contract.1],",") + 1,Text.PositionOf([Contract.1],"O") - Text.Length("On Loan"))
+
+Value custom:
+=if Text.EndsWith([Value],"K") then Number.From(Text.Middle(Text.From([Value]), Text.PositionOf(Text.From([Value]), "€") + 1, Text.PositionOf(Text.From([Value]), "K") - 1)) * 1000
+ else if Text.EndsWith([Value],"M") then Number.From(Text.Middle(Text.From([Value]), Text.PositionOf(Text.From([Value]), "€") + 1, Text.PositionOf(Text.From([Value]), "M") - 1)) * 1000000
+ else 
+     Number.From(Text.Middle([Value], Text.PositionOf(Text.From([Value]), "€") + 1))
+
+Wage custom:
+=if Text.EndsWith([Wage],"K") then Number.From(Text.Middle(Text.From([Wage]), Text.PositionOf(Text.From([Wage]), "€") + 1, Text.PositionOf(Text.From([Wage]), "K") - 1)) * 1000
+ else Number.From(Text.Middle([Wage],Text.PositionOf(Text.From([Wage]), "€") + 1))
+
+Release Clause custom:
+=if Text.EndsWith([Release Clause],"K") then Number.From(Text.Middle(Text.From([Release Clause]), Text.PositionOf(Text.From([Release Clause]), "€") + 1, Text.PositionOf(Text.From([Release Clause]), "K") - 1)) * 1000
+ else if Text.EndsWith([Release Clause],"M") then Number.From(Text.Middle(Text.From([Release Clause]), Text.PositionOf(Text.From([Release Clause]), "€") + 1, Text.PositionOf(Text.From([Release Clause]), "M") - 1)) * 1000000
+ else 
+     Number.From(Text.Middle([Release Clause],     Text.PositionOf(Text.From([Release Clause]), "€") + 1))
+
+Height custom:
+=if Text.EndsWith([Height], "cm") then Number.From(Text.Start(Text.From([Height]), Text.Length([Height]) - 2))
+else let feet = Text.BeforeDelimiter([Height], "'"), inches = Text.BeforeDelimiter(Text.AfterDelimiter([Height], "'"), """"),
+totalInches = (Number.FromText(feet) * 12) + Number.FromText(inches), cm = totalInches * 2.54 in cm
+
+Weight custom:
+=if Text.EndsWith([Weight], "lbs") then Number.FromText(Text.Start([Weight], Text.Length([Weight]) - 3)) * 0.45359237
+ else Number.FromText(Text.Start([Weight], Text.Length([Weight]) - 2))
+
+
+article link:
+https://www.linkedin.com/pulse/fifa-21-data-cleaning-project-basharat-asghar

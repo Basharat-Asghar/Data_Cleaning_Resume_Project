@@ -1,0 +1,76 @@
+Introduction:
+Data cleaning is a vital step in any data analysis project, as it involves inspecting, transforming, and validating
+the data to ensure its quality and accuracy. In this article, I will share my experience of completing a data cleaning
+challenge using Excel and Power Query on a FIFA 21 dataset. The dataset contains information about the performance and
+attributes of football players. I will demonstrate how I used various techniques such as splitting columns,
+converting data types, and calculating new columns to clean and transform the data.
+
+Scenario:
+The challenge I faced while cleaning the FIFA 21 dataset was dealing with special characters and inconsistent formats
+in some columns. For example, the name, long name, nationality, and club columns had some characters that were not in
+the standard ASCII range. The Ova column name had a special character. The contract column had both the start and end
+dates combined, and some players had missing dates, with some players having only year value as the contract
+date and other players having a contract in this format "Jan 12, 2021, On loan", and some have value as free.
+The position column had multiple positions separated by commas for players. The height and weight columns had both metric
+and imperial units, such as 175cm or 5’9" and 70kg or 154 lbs. The value, wage, and release clause columns
+had text values that included currency symbols and suffixes such as K for thousand and M for million. The hits column
+also had text values with K as a suffix for some numbers. The w/f, sm, and ir columns had numbers followed by stars,
+such as 4★ or 3★.
+
+1) One way to handle the special characters in the dataset is to change the file format to UTF-8, which can be done by
+while selecting the file to transform in power query, which is a universal encoding standard that can support a wide
+range of characters.
+2) For the OVA column simply rename the column after changing the file format in the Power Query editor.
+3) The next step to transform the dataset was to remove the stars from the W/F, SM, and IR columns, this indicated the
+weak foot ability, skill moves, and international reputation of the players. To do this, I selected the columns and
+clicked on Replace Values from the Home tab in the Transform section. A dialog box appeared where I entered * in the
+"Value To Find" option and left the "Replace With" option empty. This replaced all the stars with blank spaces. Then I
+changed the column type to Integer.
+4) The next transformation I performed on the dataset was to clean the hits column, which had text values that
+included K as a suffix for some numbers. To do this, I went to the Add Column tab and selected Custom Column.
+I created a new column called Hits Cleaned by writing an M code in the editor that removed the K suffix and
+multiplied the value by 1000 if it was present, otherwise same value.[formula] Then I removed the original hits column by right-clicking on it and
+selecting Remove. I changed the new column type to Integer, and renamed the new column as Hits by double-clicking on it
+and typing the new name.
+5) Another transformation I applied to the dataset was to split the contract column, which had both the start
+and end dates combined in one cell with a "~" symbol as a delimiter. To do this, I selected the contract column and went
+to the Home tab. I clicked on Split Column and then on By Delimiter. A dialog box appeared where I chose Custom as the
+delimiter and entered "~" in the box. This split the column into two new columns with the start and end dates.
+I selected both columns and went to the Transform tab. I clicked on Format and then Trim, which removed any leading and
+trailing spaces from the values. I added a custom column by writing an M code that extracts the year value from the
+string.[formula] I also used Trim on that column to remove any spaces. I renamed the newly created column as Contract
+Start and the other column as Contract End.
+6) The next transformation I performed on the dataset was to clean the value, wage, and release clause columns,
+These had text values including currency symbols and suffixes such as K for thousand and M for million. To do this,
+I created new custom columns by writing M code that extracted the number from the string and multiplied it by 1000 if the
+it ended with K or 1000000 if it ended with M.[formula] Changed the new column types to Integer.
+I removed the original columns, and renamed the new columns as Value (€), Wage(€) and Release Clause(€).
+7) Another transformation that I applied to the dataset was to convert the height column, which had values in both
+centimeters and feet, such as 175cm, 5’9". To do this, I added a new custom column by writing an M code that converted
+the values to centimeters who have values like 5'9" if not same value.[formula] Changed the new column type to Integer.
+Then removed the original column, and renamed the new column as Height (cm).
+8) For weight, the same process created a new custom column that converts values that are in "lbs" to "kg" by writing
+M code if not same value.[formula] Changed column type to integer and removed the original column.Renamed the new column as Weight (kg)
+9) Toward the end, I removed columns like Long Name as most people did not know their full name, Photo Url, Player Url,
+Positions as they have multiple positions, because we have a Best Position column where players play at their finest.
+10) For player names, I kept the Name column as this column has short names sufficient to recognize a player.
+11) Other stats columns like BOV, POT, and OVA are kept as integers.
+The OVA (Overall) rating is not directly considered as a percentage. It represents an overall rating of a player's
+abilities and skills, typically on a scale from 0 to 99. The OVA rating is a numerical representation of a player's
+overall performance and is used to evaluate and compare players in the game. It takes into account various attributes
+and skills, such as speed, shooting, passing, dribbling, defending, and physicality.
+
+BOV represents the best overall rating a player can achieve based on their current abilities and skills. It reflects the
+player's peak performance level and is also typically on a scale from 0 to 99. Similar to OVA, the BOV rating is not
+considered as a percentage but rather as a numerical representation of a player's overall quality.
+
+POT, on the other hand, represents the player's potential rating, indicating their projected future development and
+improvement. It reflects the maximum overall rating a player can reach with proper training and game time. Like OVA
+and BOV, the POT rating is also represented as a numerical value, not as a percentage.
+
+These ratings—OVA, BOV, and POT—provide a standardized way to evaluate and compare players in the FIFA game,
+allowing players and managers to assess the quality, potential, and overall abilities of virtual footballers.
+
+Ending:
+Thank you for reading and feel free to share your feedback or questions in the comments section below.
+
